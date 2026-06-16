@@ -1,0 +1,5 @@
+project_id = "cbitwuvctttjhgdrngev"
+
+[auth.email]
+# Magic links / OTP valid for 24 hours (86400 seconds)
+otp_expiry = 86400

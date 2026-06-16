@@ -1,0 +1,1 @@
+UPDATE profiles SET role = 'executive' WHERE email = 'xcsa2010@gmail.com';
