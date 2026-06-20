@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState, ReactNode, useCallback 
 import { User, Session } from "@supabase/supabase-js";
 import { isSupabaseConfigured, supabase } from "@/integrations/supabase/client";
 import type { AppRole } from "@/lib/roleUtils";
-import { isRoleIn, isRoleAtLeast } from "@/lib/roleUtils";
+import { isRoleIn, isRoleAtLeast, resolveEffectiveRole } from "@/lib/roleUtils";
 
 interface Profile {
   id: string;
@@ -13,6 +13,10 @@ interface Profile {
   salutation: string;
   role: string;
   is_active: boolean;
+  raw_user_meta_data?: {
+    role?: string;
+    [key: string]: unknown;
+  };
   [key: string]: unknown;
 }
 
@@ -53,7 +57,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const { data, error } = await supabase
         .from("profiles")
-        .select("*")
+        .select("*, raw_user_meta_data")
         .eq("id", userId)
         .single();
 
@@ -87,13 +91,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       async (_event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
+        setLoading(true);
+
         if (session?.user) {
           // Defer profile fetch to avoid Supabase client deadlock
-          setTimeout(() => fetchProfile(session.user.id), 0);
+          setTimeout(() => {
+            void fetchProfile(session.user.id).finally(() => setLoading(false));
+          }, 0);
         } else {
           setProfile(null);
+          setLoading(false);
         }
-        setLoading(false);
       }
     );
 
@@ -101,16 +109,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
+      setLoading(true);
+
       if (session?.user) {
-        fetchProfile(session.user.id);
+        void fetchProfile(session.user.id).finally(() => setLoading(false));
+      } else {
+        setProfile(null);
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     return () => subscription.unsubscribe();
   }, [fetchProfile]);
 
-  const role = profile?.role ?? "";
+  const role = resolveEffectiveRole(
+    profile?.role ?? null,
+    (profile as Profile | null | undefined)?.raw_user_meta_data?.role ?? session?.user?.user_metadata?.role ?? session?.user?.app_metadata?.role
+  ) ?? "";
 
   const isRole = useCallback(
     (roles: AppRole | AppRole[]) => {

@@ -115,13 +115,8 @@ const AdminUsers = () => {
       const result = await callAdmin("create_user", createForm);
       if (result?.invite_sent) {
         toast.success("Invite sent — user will receive an email to set their password");
-      } else if (result?.temp_password) {
-        toast.success(
-          `User created. Temp password: ${result.temp_password} (share securely)`,
-          { duration: 20000 },
-        );
       } else {
-        toast.success("User created");
+        toast.success("User created. The user can set a password through the password setup flow.");
       }
       setCreateOpen(false);
       setCreateForm({ email: "", first_name: "", last_name: "", role: "subscriber" });

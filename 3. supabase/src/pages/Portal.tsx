@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { ROLE_LABELS, type AppRole } from "@/lib/roleUtils";
 import {
   Users, CreditCard, Wrench, BarChart3, AlertTriangle,
-  Handshake, Target, Heart, Shield, UserPlus, Headphones,
+  Handshake, Target, Heart, Shield, UserPlus, Headphones, Network, Building2, Truck, GraduationCap,
 } from "lucide-react";
 
 interface Tile {
@@ -17,11 +17,21 @@ interface Tile {
 }
 
 const tiles: Tile[] = [
-  { to: "/admin/users", label: "User Management", desc: "Create, edit and manage user accounts", icon: UserPlus },
   { to: "/admin/dashboard", label: "Dashboard", desc: "Operational overview and key metrics", icon: BarChart3 },
+  { to: "/admin/command-centre", label: "Command Centre", desc: "Executive command and operations workspace", icon: Shield, roles: ["executive"] },
+  { to: "/admin/users", label: "User Management", desc: "Create, edit and manage user accounts", icon: UserPlus },
   { to: "/admin/billing", label: "Billing", desc: "Subscriptions, payments and refunds", icon: CreditCard },
   { to: "/admin/service", label: "Service Centre", desc: "Tickets, audit logs and tooling", icon: Headphones },
+  { to: "/admin/orders", label: "Orders", desc: "Order management and fulfilment", icon: BarChart3 },
+  { to: "/admin/stakeholders", label: "Stakeholders", desc: "Stakeholder and CRM relationships", icon: Network },
+  { to: "/admin/sales-agents", label: "Sales Agents", desc: "Sales agent roster and management", icon: UserPlus },
+  { to: "/phase2", label: "Phase 2 Ops", desc: "Phase 2 operational workspace", icon: Shield, roles: ["executive"] },
   { to: "/admin-data", label: "Admin Data", desc: "Data management and exports", icon: Wrench, roles: ["support", "executive"] },
+  { to: "/admin/operations-data", label: "Operations Data", desc: "Create schools, warehouses and entities", icon: Building2, roles: ["service", "support", "executive"] },
+  { to: "/admin/fulfillment", label: "Fulfillment", desc: "Manage inventory, shipments and delivery events", icon: Truck, roles: ["service", "support", "executive"] },
+  { to: "/admin/training", label: "Training", desc: "Plan sessions, attendance and sponsor programmes", icon: GraduationCap, roles: ["service", "support", "executive"] },
+  { to: "/admin/reporting", label: "Reporting", desc: "Milestones, KPI snapshots and rollout visibility", icon: BarChart3, roles: ["service", "support", "executive"] },
+  { to: "/admin/delivery", label: "Delivery", desc: "Shipment tracking and delivery events", icon: Truck, roles: ["service", "support", "executive"] },
   { to: "/admin/api-console", label: "API Console", desc: "Direct API tooling for support", icon: Wrench, roles: ["support", "executive"] },
   { to: "/admin/escalations", label: "Escalations", desc: "L6 escalation queue", icon: AlertTriangle, roles: ["executive"] },
   { to: "/portal/partners", label: "Our Partners", desc: "Strategic partners directory", icon: Handshake },

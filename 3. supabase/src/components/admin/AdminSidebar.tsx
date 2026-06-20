@@ -1,7 +1,7 @@
 import { NavLink, useLocation } from "react-router-dom";
 import {
   LayoutGrid, BarChart3, Users, Headphones, CreditCard,
-  Wrench, AlertTriangle, Handshake, Target, Heart, Package, Network, Briefcase,
+  Wrench, AlertTriangle, Handshake, Target, Heart, Package, Network, Briefcase, Truck,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { type AppRole } from "@/lib/roleUtils";
@@ -26,18 +26,22 @@ interface NavItem {
 }
 
 const operationsItems: NavItem[] = [
-  { to: "/portal", label: "Portal Home", icon: LayoutGrid, end: true },
-  { to: "/admin/dashboard", label: "Dashboard", icon: BarChart3 },
-  { to: "/admin/users", label: "User Management", icon: Users },
-  { to: "/admin/service", label: "Service Centre", icon: Headphones },
-  { to: "/admin/orders", label: "Orders", icon: Package },
-  { to: "/admin/billing", label: "Billing", icon: CreditCard },
-  { to: "/admin/stakeholders", label: "Stakeholders CRM", icon: Network },
-  { to: "/admin/sales-agents", label: "Sales Agents", icon: Briefcase },
+  { to: "/portal", label: "Portal Home", icon: LayoutGrid, end: true, roles: ["service", "support", "sales_agent", "executive"] },
+  { to: "/admin/dashboard", label: "Dashboard", icon: BarChart3, roles: ["service", "support", "sales_agent", "executive"] },
+  { to: "/phase2", label: "Phase 2 Ops", icon: Package, roles: ["executive"] },
+  { to: "/admin/command-centre", label: "Command Centre", icon: BarChart3, roles: ["executive"] },
+  { to: "/admin/users", label: "User Management", icon: Users, roles: ["service", "support", "sales_agent", "executive"] },
+  { to: "/admin/service", label: "Service Centre", icon: Headphones, roles: ["service", "support", "sales_agent", "executive"] },
+  { to: "/admin/orders", label: "Orders", icon: Package, roles: ["service", "support", "sales_agent", "executive"] },
+  { to: "/admin/billing", label: "Billing", icon: CreditCard, roles: ["service", "support", "sales_agent", "executive"] },
+  { to: "/admin/stakeholders", label: "Stakeholders CRM", icon: Network, roles: ["service", "support", "sales_agent", "executive"] },
+  { to: "/admin/sales-agents", label: "Sales Agents", icon: Briefcase, roles: ["service", "support", "sales_agent", "executive"] },
 ];
 
 const advancedItems: NavItem[] = [
   { to: "/admin-data", label: "Admin Data", icon: Wrench, roles: ["support", "executive"] },
+  { to: "/admin/reporting", label: "Reporting", icon: BarChart3, roles: ["service", "support", "executive"] },
+  { to: "/admin/delivery", label: "Delivery", icon: Truck, roles: ["service", "support", "executive"] },
   { to: "/admin/api-console", label: "API Console", icon: Wrench, roles: ["support", "executive"] },
   { to: "/admin/escalations", label: "Escalations", icon: AlertTriangle, roles: ["executive"] },
 ];
